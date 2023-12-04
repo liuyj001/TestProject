@@ -1,0 +1,16 @@
+server:
+  port: 82
+
+likes:
+  - music
+  - book
+  - run
+
+spring:
+  datasource:
+    url: jdbc:postgresql://itrd-pgsql-sit.h3c.com:5432/iam-test
+    driver: org.postgresql.Driver
+    username: h3ciam
+    password: Hello123
+
+

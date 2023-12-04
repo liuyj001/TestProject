@@ -1,0 +1,7 @@
+servers:
+  ipAddress: 10.90.16.50
+  port: 8083
+  timeout: 300
+
+dataSource:
+  driverClassName: "com.mysql.jdbc.driver"

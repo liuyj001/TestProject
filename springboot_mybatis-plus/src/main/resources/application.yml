@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://itrd-pgsql-sit.h3c.com:5432/iam-test
+    username: h3ciam
+    password: Hello123
+    driver-class-name: org.postgresql.Driver

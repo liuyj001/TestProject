@@ -1,0 +1,5 @@
+spring:
+  devtools:
+    restart:
+      exclude: static/**,public/**
+      enabled: true

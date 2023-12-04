@@ -1,0 +1,5 @@
+test:
+  prop: testValue
+
+server:
+  port: 8080

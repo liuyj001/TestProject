@@ -1,0 +1,39 @@
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+spring:
+  profiles:
+    active: test
+
+jasypt:
+  encryptor:
+    #algorithm: PBEWithMD5AndDES
+    #iv-generator-classname: org.jasypt.iv.NoIvGenerator
+    password: H3C
+
+
+---
+spring:
+  datasource:
+    druid:
+      url: jdbc:postgresql://10.90.17.73:5432/qmoffice_dev
+      username: qmoffice
+#      password: qmoffice
+      driver-class-name: org.postgresql.Driver
+      password: ENC(H5t67P9356hDq1kbl/AQVc4K994LuG7Y)
+  config:
+    activate:
+      on-profile: test
+
+---
+spring:
+  datasource:
+    druid:
+      url: jdbc:postgresql://qodb.h3c.com:5432/qmoffice
+      username: h3c_qmoffice
+      password: ENC(U4suh5PsUgVv+cvJPhl7ypYgWUFyEhVJ)
+      driver-class-name: org.postgresql.Driver
+  config:
+    activate:
+      on-profile: prod
