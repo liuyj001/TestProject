@@ -17,16 +17,14 @@ import java.util.stream.Collectors;
 
 public class JiebaDemo2 {
 
-    public static String CHINESE = "，。！？；：“”【】《》（）、";
-    public static String ENGLISH = ",.!?;:\"[]<>()\\";
+    public static String CHINESE = "，。！？；：“”‘’【】《》（）、";
+    public static String ENGLISH = ",.!?;:\"''[]<>()\\";
     public static void main(String[] args) throws Exception {
-
-        String sentence = "我是一只小鸟。我是一个中国人，你是哪人？ where are you come from?";
+        String sentence = "我是一只小鸟。我是一个中国人，你是哪人？ where are you come from? we're a programmer and co-worker.";
         testDemo(sentence);
 
         // 定义正则表达式
-//        String regex = "\\b[\\w']+(-[\\w']+\\b)?'\\b";
-        String regex = "\\b[a-zA-Z]+('\\b|-\\b[a-zA-Z]+')?\\b";
+        String regex = "\\b[\\w\\']+(-[\\w\\']+\\b)?";
 
         // 编译正则表达式
         Pattern pattern = Pattern.compile(regex);
@@ -35,6 +33,7 @@ public class JiebaDemo2 {
         // 统计匹配到的单词数量
         int wordCount = 0;
         while (matcher.find()) {
+            System.out.println(matcher.group());
             wordCount++;
         }
 
@@ -50,6 +49,7 @@ public class JiebaDemo2 {
         // 统计匹配到的单词数量
          wordCount = 0;
         while (matcher.find()) {
+            String group = matcher.group();
             wordCount++;
         }
         System.out.println("包含中文的数量: " + wordCount);
@@ -57,6 +57,17 @@ public class JiebaDemo2 {
     }
 
     public static String testDemo(String sentence) throws Exception {
+        //拆分出其中的中文内容
+        String regex = "[^\\u4e00-\\u9fa5a-zA-Z ]+";
+
+        // 将非中英文字符过滤掉
+        sentence = sentence.replaceAll(regex, "").toLowerCase();
+
+        // 将中英文之间的空格或标点符号替换为占位符
+        sentence = sentence.replaceAll("([\\u4e00-\\u9fa5])([a-zA-Z])", "$1 $2");
+        sentence = sentence.replaceAll("([a-zA-Z])([\\u4e00-\\u9fa5])", "$1 $2");
+
+
         JiebaSegmenter segmenter = new JiebaSegmenter();
         String resultStr = segmenter.process(sentence, JiebaSegmenter.SegMode.INDEX).toString();
 
@@ -66,15 +77,14 @@ public class JiebaDemo2 {
 
         List<SegToken> aiTokens = segmenter.process(sentence, JiebaSegmenter.SegMode.SEARCH);
         List<String> aiContentList = aiTokens.stream()
-                .filter(o-> {
-                    return !(CHINESE.contains(o.word)||ENGLISH.contains(o.word));
-                }).map(token -> token.word).collect(Collectors.toList());
+                .filter(o-> !(CHINESE.contains(o.word)||ENGLISH.contains(o.word))).map(token -> token.word).collect(Collectors.toList());
         System.out.println(aiContentList.size());
-
+        System.out.println(aiContentList);
        /* // 词典路径为Resource/dicts/jieba.dict
         ResourceLoader resourceLoader = new FileSystemResourceLoader();
         File file = resourceLoader.getResource("classpath:dicts" +
                 "/dict-h3c.txt").getFile();
+
         String absolutePath = file.getAbsolutePath();
 //        String absolutePath = new File(JiebaDemo2.class.getClassLoader().getResource("dict-h3c.txt").getPath()).getAbsolutePath();
         Path path = Paths.get(URLDecoder.decode(absolutePath, "UTF-8"));
